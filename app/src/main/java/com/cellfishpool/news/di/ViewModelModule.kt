@@ -3,6 +3,7 @@ package com.cellfishpool.news.di
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import com.cellfishpool.news.ui.news.NewsViewModel
+import com.cellfishpool.news.ui.news.SearchViewModel
 import com.cellfishpool.news.ui.news.TopNewsViewModel
 import com.cellfishpool.news.utils.ViewModelFactory
 import dagger.Binds
@@ -23,5 +24,10 @@ abstract class ViewModelModule {
     @IntoMap
     @ViewModelKey(TopNewsViewModel::class)
     abstract fun bindTopNewsViewModel(topNewsViewModel: TopNewsViewModel): ViewModel
+
+    @Binds
+    @IntoMap
+    @ViewModelKey(SearchViewModel::class)
+    abstract fun bindSearchViewModel(SearchViewModel: SearchViewModel): ViewModel
 
 }

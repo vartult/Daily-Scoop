@@ -36,9 +36,6 @@ class NewsActivity : BaseActivity<NewsViewModel, ActivityMainBinding>(),
                     .commit()
 
             }
-            else->  {
-                Log.d("fragment","else block")
-            }
         }
         return true
     }

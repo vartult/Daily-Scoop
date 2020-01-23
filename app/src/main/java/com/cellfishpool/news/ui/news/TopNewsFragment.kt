@@ -22,13 +22,14 @@ class TopNewsFragment : BaseFragment<TopNewsViewModel, TopNewsFragmentBinding>()
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
+        startRefreshing()
         viewModel.getData()
     }
 
     override fun initRecycler() {
-        with(binding.recyclerView){
+        with(binding.recyclerView) {
             adapter = TopNewsAdapter()
-            layoutManager = LinearLayoutManager(context,LinearLayoutManager.VERTICAL,false)
+            layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
         }
 
     }
@@ -57,6 +58,14 @@ class TopNewsFragment : BaseFragment<TopNewsViewModel, TopNewsFragmentBinding>()
         with(binding.swipeRefreshLayout) {
             if (isRefreshing) {
                 isRefreshing = false
+            }
+        }
+    }
+
+    private fun startRefreshing() {
+        with(binding.swipeRefreshLayout) {
+            if (!isRefreshing) {
+                isRefreshing = true
             }
         }
     }
