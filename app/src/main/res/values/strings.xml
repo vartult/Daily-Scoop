@@ -1,0 +1,10 @@
+<resources>
+    <string name="app_name">News</string>
+    <string name="menu_top">Top Headlines</string>
+    <string name="menu_search">Search</string>
+    <string name="menu_settings">Settings</string>
+    <string name="textview">TextView</string>
+    <string name="title">Title</string>
+    <string name="description">Description</string>
+    <string name="content_description">Image Related to News</string>
+</resources>
