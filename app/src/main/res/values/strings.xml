@@ -7,4 +7,11 @@
     <string name="title">Title</string>
     <string name="description">Description</string>
     <string name="content_description">Image Related to News</string>
+    <string name="country_key">country</string>
+    <string name="dark_key">dark</string>
+    <string name="dark_title">Dark Mode</string>
+    <string name="country_title">Preferred Country</string>
+    <string name="summary">Dark Mode suitable for nights</string>
+    <string name="country_summary">Get top Headlines from your country</string>
+    <string name="country_dialog">Select Preferred Country</string>
 </resources>

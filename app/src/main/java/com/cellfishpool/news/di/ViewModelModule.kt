@@ -3,7 +3,7 @@ package com.cellfishpool.news.di
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import com.cellfishpool.news.ui.news.NewsViewModel
-import com.cellfishpool.news.ui.news.SearchViewModel
+import com.cellfishpool.news.ui.search.SearchViewModel
 import com.cellfishpool.news.ui.news.TopNewsViewModel
 import com.cellfishpool.news.utils.ViewModelFactory
 import dagger.Binds

@@ -2,7 +2,7 @@ package com.cellfishpool.news.di
 
 import com.cellfishpool.news.NewsApplication
 import com.cellfishpool.news.ui.news.NewsActivity
-import com.cellfishpool.news.ui.news.SearchFragment
+import com.cellfishpool.news.ui.search.SearchFragment
 import com.cellfishpool.news.ui.news.TopNewsFragment
 import dagger.BindsInstance
 import dagger.Component

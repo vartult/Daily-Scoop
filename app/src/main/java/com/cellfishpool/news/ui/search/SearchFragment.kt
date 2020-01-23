@@ -1,4 +1,4 @@
-package com.cellfishpool.news.ui.news
+package com.cellfishpool.news.ui.search
 
 import android.os.Bundle
 import com.cellfishpool.news.NewsApplication

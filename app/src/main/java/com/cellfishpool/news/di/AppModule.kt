@@ -2,10 +2,12 @@ package com.cellfishpool.news.di
 
 import android.content.ContentProvider
 import android.content.Context
+import android.content.SharedPreferences
 import com.cellfishpool.news.NewsApplication
 import com.cellfishpool.news.database.ArticleDatabase
 import com.cellfishpool.news.network.service.ApiService
 import com.cellfishpool.news.utils.Constants
+import com.cellfishpool.news.utils.Constants.PREF_NAME
 import com.jakewharton.retrofit2.adapter.kotlin.coroutines.CoroutineCallAdapterFactory
 import dagger.Module
 import dagger.Provides
@@ -68,5 +70,11 @@ class AppModule{
     @Singleton
     fun provideDatabase(context: Context): ArticleDatabase{
         return ArticleDatabase.getIntance(context)!!
+    }
+
+    @Provides
+    @Singleton
+    fun provideSharedPreferences(context: Context): SharedPreferences{
+        return context.getSharedPreferences(PREF_NAME,Context.MODE_PRIVATE)
     }
 }

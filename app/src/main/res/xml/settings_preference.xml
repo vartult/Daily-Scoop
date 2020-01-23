@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <PreferenceCategory android:title="Settings">
+        <CheckBoxPreference
+            android:icon="@drawable/ic_darkmode"
+            android:key="@string/dark_key"
+            android:summary="@string/summary"
+            android:title="@string/dark_title" />
+        <ListPreference
+            android:dialogTitle="@string/country_dialog"
+            android:entries="@array/reply_entries"
+            android:entryValues="@array/reply_values"
+            android:icon="@drawable/ic_country"
+            android:key="@string/country_key"
+            android:title="@string/country_title"
+            app:useSimpleSummaryProvider="true" />
+    </PreferenceCategory>
+
+</PreferenceScreen>
