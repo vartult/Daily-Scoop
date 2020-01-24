@@ -45,7 +45,10 @@ class NewsRepository @Inject constructor(
     suspend fun fetchSearchQueryCoroutine (q: String){
         withContext(Dispatchers.IO){
             if(isConnected()){
-                val queries= fetchSearchQuery(q)
+                val queries= fetchSearchQuery(q)?.articles?.map {
+                    it.toRoomResult()
+                }
+                searchLiveData.postValue(queries)
             }
         }
     }
