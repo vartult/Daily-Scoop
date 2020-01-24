@@ -1,5 +1,6 @@
 package com.cellfishpool.news.di
 
+import android.content.SharedPreferences
 import com.cellfishpool.news.NewsApplication
 import com.cellfishpool.news.ui.news.NewsActivity
 import com.cellfishpool.news.ui.search.SearchFragment
@@ -15,6 +16,8 @@ interface AppComponent {
     interface Factory {
         fun create(@BindsInstance application: NewsApplication): AppComponent
     }
+
+    fun getSharedPreference(): SharedPreferences
 
     fun inject(newsActivity: NewsActivity)
     fun inject(topNewsFragment: TopNewsFragment)

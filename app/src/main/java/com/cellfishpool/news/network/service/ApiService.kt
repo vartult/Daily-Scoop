@@ -16,6 +16,6 @@ interface ApiService {
     @GET("everything")
     suspend fun getSearchQuery(
         @Query("q") query: String,
-        @Query("apiKey") apiKey: String
+        @Query("apiKey") apiKey: String = Constants.API_KEY
     ): Response<ResponseNews>
 }

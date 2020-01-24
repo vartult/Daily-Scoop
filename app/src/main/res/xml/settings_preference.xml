@@ -12,7 +12,7 @@
             android:entries="@array/reply_entries"
             android:entryValues="@array/reply_values"
             android:icon="@drawable/ic_country"
-            android:key="@string/country_key"
+            android:key="country"
             android:title="@string/country_title"
             app:useSimpleSummaryProvider="true" />
     </PreferenceCategory>

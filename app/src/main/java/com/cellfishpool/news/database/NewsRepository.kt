@@ -1,11 +1,14 @@
 package com.cellfishpool.news.database
 
+import android.content.SharedPreferences
 import android.util.Log
 import androidx.lifecycle.MutableLiveData
+import com.cellfishpool.news.R
 import com.cellfishpool.news.network.model.ArticleRoom
 import com.cellfishpool.news.network.model.ResponseNews
 import com.cellfishpool.news.network.model.toRoomResult
 import com.cellfishpool.news.network.service.ApiService
+import com.cellfishpool.news.utils.Constants
 import com.cellfishpool.news.utils.NetworkUtil
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
@@ -14,10 +17,12 @@ import javax.inject.Inject
 class NewsRepository @Inject constructor(
     private val apiService: ApiService,
     private val database: ArticleDatabase,
-    private val networkUtil: NetworkUtil
+    private val networkUtil: NetworkUtil,
+    private val sharedPreferences: SharedPreferences
 ) {
 
     val articleLiveData = MutableLiveData<List<ArticleRoom>>()
+    val searchLiveData= MutableLiveData<List<ArticleRoom>>()
     private fun isConnected(): Boolean {
         return networkUtil.isNetworkAvailable()
     }
@@ -25,7 +30,7 @@ class NewsRepository @Inject constructor(
     suspend fun fetchArticleDataCoroutine() {
         withContext(Dispatchers.IO) {
             if (isConnected()) {
-                val articles = fetchArticleDataFromNetworkCoroutine()?.articles?.map {
+                val articles = fetchArticleDataFromNetworkCoroutine(sharedPreferences.getString(Constants.COUNTRY_KEY,"in")!!)?.articles?.map {
                     it.toRoomResult()
                 }
                 deleteAllStories()
@@ -34,6 +39,28 @@ class NewsRepository @Inject constructor(
             } else {
                 articleLiveData.postValue(fetchArticleDatafromRoom())
             }
+        }
+    }
+
+    suspend fun fetchSearchQueryCoroutine (q: String){
+        withContext(Dispatchers.IO){
+            if(isConnected()){
+                val queries= fetchSearchQuery(q)
+            }
+        }
+    }
+
+    private suspend fun fetchSearchQuery(query: String):ResponseNews?{
+        val response=apiService.getSearchQuery(query)
+        return if (response.isSuccessful)
+        {
+            Log.i("NewsRepository", response.toString())
+            response.body()
+        }
+
+        else {
+            Log.i("NewsRepository", "Error Fetching Data")
+            null
         }
     }
 
@@ -49,10 +76,10 @@ class NewsRepository @Inject constructor(
         database.getArticlesDao().deleteAllArticles()
     }
 
-    private suspend fun fetchArticleDataFromNetworkCoroutine(): ResponseNews? {
+    private suspend fun fetchArticleDataFromNetworkCoroutine(country: String): ResponseNews? {
 
         //return apiService.getTopHeadLines("in")
-        val response = apiService.getTopHeadLines("in")
+        val response = apiService.getTopHeadLines(country)
         return if (response.isSuccessful)
         {
             Log.i("NewsRepository", response.toString())
