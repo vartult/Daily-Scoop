@@ -42,10 +42,10 @@ class NewsRepository @Inject constructor(
         }
     }
 
-    suspend fun fetchSearchQueryCoroutine (q: String){
+    private suspend fun fetchSearchQueryCoroutine (responseNews: ResponseNews){
         withContext(Dispatchers.IO){
             if(isConnected()){
-                val queries= fetchSearchQuery(q)?.articles?.map {
+                val queries= responseNews.articles.map {
                     it.toRoomResult()
                 }
                 searchLiveData.postValue(queries)
@@ -53,17 +53,17 @@ class NewsRepository @Inject constructor(
         }
     }
 
-    private suspend fun fetchSearchQuery(query: String):ResponseNews?{
+     suspend fun fetchSearchQuery(query: String){
         val response=apiService.getSearchQuery(query)
-        return if (response.isSuccessful)
+         if (response.isSuccessful)
         {
             Log.i("NewsRepository", response.toString())
-            response.body()
+            fetchSearchQueryCoroutine(response.body()!!)
         }
 
         else {
             Log.i("NewsRepository", "Error Fetching Data")
-            null
+
         }
     }
 

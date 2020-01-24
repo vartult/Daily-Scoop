@@ -1,10 +1,13 @@
 package com.cellfishpool.news.ui.search
 
+import android.app.Application
 import android.content.Context
 import android.os.Bundle
+import android.text.Editable
+import android.text.TextWatcher
+import android.view.KeyEvent
 import android.view.View
 import android.view.inputmethod.InputMethodManager
-import androidx.appcompat.widget.SearchView
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.cellfishpool.news.NewsApplication
@@ -13,9 +16,9 @@ import com.cellfishpool.news.databinding.SearchFragmentBinding
 import com.cellfishpool.news.network.model.ArticleRoom
 import com.cellfishpool.news.ui.base.BaseFragment
 import com.cellfishpool.news.ui.news.TopNewsAdapter
+import kotlinx.android.synthetic.main.search_fragment.view.*
 
-class SearchFragment : BaseFragment<SearchViewModel, SearchFragmentBinding>(),
-    SearchView.OnQueryTextListener {
+class SearchFragment : BaseFragment<SearchViewModel, SearchFragmentBinding>() {
     override fun getViewModelClass(): Class<SearchViewModel> = SearchViewModel::class.java
 
     override fun getLayoutId(): Int = R.layout.search_fragment
@@ -36,16 +39,33 @@ class SearchFragment : BaseFragment<SearchViewModel, SearchFragmentBinding>(),
         }
     }
 
+//    override fun addListner() {
+//        with(binding.searchView) {
+//
+//            setOnQueryTextListener(this@SearchFragment)
+//            setOnFocusChangeListener { view, hasFocus ->
+//                if (hasFocus) showKeyboard(view)
+//                else dismissKeyboard(view)
+//            }
+//            requestFocus()
+//        }
+//    }
+
     override fun addListner() {
         with(binding.searchView) {
-            setOnQueryTextListener(this@SearchFragment)
-            setOnFocusChangeListener { view, hasFocus ->
-                if (hasFocus) showKeyboard(view)
-                else dismissKeyboard(view)
+            setOnKeyListener { v, keyCode, event ->
+                if (keyCode == KeyEvent.KEYCODE_ENTER) {
+                    viewModel.getData(searchView.text.toString())
+                    dismissKeyboard(activity?.currentFocus!!)
+                    true
+                }
+                false
             }
-            requestFocus()
+            showKeyboard(activity?.currentFocus!!)
+
         }
     }
+
 
     private fun updateRecyclerViewAdapter(results: List<ArticleRoom>) {
         val adapter = binding.searchrecyclerview.adapter
@@ -58,16 +78,6 @@ class SearchFragment : BaseFragment<SearchViewModel, SearchFragmentBinding>(),
         viewModel.searchLiveData.observe(viewLifecycleOwner, Observer {
             updateRecyclerViewAdapter(it)
         })
-    }
-
-    override fun onQueryTextSubmit(query: String?): Boolean {
-        viewModel.getData(query!!)
-        dismissKeyboard(activity?.currentFocus!!)
-        return true
-    }
-
-    override fun onQueryTextChange(newText: String?): Boolean {
-        return true
     }
 
     private fun showKeyboard(view: View) {

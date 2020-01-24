@@ -14,4 +14,5 @@
     <string name="summary">Dark Mode suitable for nights</string>
     <string name="country_summary">Get top Headlines from your country</string>
     <string name="country_dialog">Select Preferred Country</string>
+    <string name="Search_sample">Search Articles</string>
 </resources>
