@@ -1,6 +1,9 @@
 package com.cellfishpool.news.ui.search
 
+import android.content.Context
 import android.os.Bundle
+import android.view.View
+import android.view.inputmethod.InputMethodManager
 import androidx.appcompat.widget.SearchView
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -34,7 +37,14 @@ class SearchFragment : BaseFragment<SearchViewModel, SearchFragmentBinding>(),
     }
 
     override fun addListner() {
-        binding.searchView.setOnQueryTextListener(this)
+        with(binding.searchView) {
+            setOnQueryTextListener(this@SearchFragment)
+            setOnFocusChangeListener { view, hasFocus ->
+                if (hasFocus) showKeyboard(view)
+                else dismissKeyboard(view)
+            }
+            requestFocus()
+        }
     }
 
     private fun updateRecyclerViewAdapter(results: List<ArticleRoom>) {
@@ -52,6 +62,7 @@ class SearchFragment : BaseFragment<SearchViewModel, SearchFragmentBinding>(),
 
     override fun onQueryTextSubmit(query: String?): Boolean {
         viewModel.getData(query!!)
+        dismissKeyboard(activity?.currentFocus!!)
         return true
     }
 
@@ -59,4 +70,15 @@ class SearchFragment : BaseFragment<SearchViewModel, SearchFragmentBinding>(),
         return true
     }
 
+    private fun showKeyboard(view: View) {
+        val inputMethodManager =
+            view.context.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+        inputMethodManager.showSoftInput(view, InputMethodManager.SHOW_FORCED)
+    }
+
+    private fun dismissKeyboard(view: View) {
+        val inputMethodManager =
+            view.context.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+        inputMethodManager.hideSoftInputFromWindow(view.windowToken, 0)
+    }
 }
