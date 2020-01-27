@@ -39,11 +39,14 @@ class SearchFragment : BaseFragment<SearchViewModel, SearchFragmentBinding>() {
     }
 
     override fun addListner() {
+        binding.swipeRefreshLayout.setOnRefreshListener {
+            stopRefreshing()
+        }
 
         with(binding.searchView) {
             addTextChangedListener(object : TextWatcher {
                 override fun afterTextChanged(s: Editable?) {
-                    var observableQuery = RxTextView.textChanges(this@with).map { it.toString() }
+                    val observableQuery = RxTextView.textChanges(this@with).map { it.toString() }
                     viewModel.autoResult(observableQuery)
                     if(s.toString().length>=3)
                     this@SearchFragment.startRefreshing()
@@ -62,9 +65,7 @@ class SearchFragment : BaseFragment<SearchViewModel, SearchFragmentBinding>() {
             })
             setOnKeyListener { v, keyCode, event ->
                 if (keyCode == KeyEvent.KEYCODE_ENTER) {
-                    //viewModel.getData(searchView.text.toString())
                     dismissKeyboard(activity?.currentFocus!!)
-                    true
                 }
                 false
             }
