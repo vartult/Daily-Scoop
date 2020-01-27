@@ -45,7 +45,8 @@ class SearchFragment : BaseFragment<SearchViewModel, SearchFragmentBinding>() {
                 override fun afterTextChanged(s: Editable?) {
                     var observableQuery = RxTextView.textChanges(this@with).map { it.toString() }
                     viewModel.autoResult(observableQuery)
-
+                    if(s.toString().length>=3)
+                    this@SearchFragment.startRefreshing()
                 }
 
                 override fun beforeTextChanged(
@@ -74,10 +75,9 @@ class SearchFragment : BaseFragment<SearchViewModel, SearchFragmentBinding>() {
 
 
     private fun updateRecyclerViewAdapter(results: List<ArticleRoom>) {
-
+        stopRefreshing()
         val adapter = binding.searchrecyclerview.adapter
         (adapter as? TopNewsAdapter)?.updateDataSet(results)
-
     }
 
     override fun addObservers() {
@@ -97,5 +97,21 @@ class SearchFragment : BaseFragment<SearchViewModel, SearchFragmentBinding>() {
         val inputMethodManager =
             view.context.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
         inputMethodManager.hideSoftInputFromWindow(view.windowToken, 0)
+    }
+
+    override fun stopRefreshing() {
+        with(binding.swipeRefreshLayout) {
+            if (isRefreshing) {
+                isRefreshing = false
+            }
+        }
+    }
+
+    override fun startRefreshing() {
+        with(binding.swipeRefreshLayout) {
+            if (!isRefreshing) {
+                isRefreshing = true
+            }
+        }
     }
 }

@@ -54,7 +54,7 @@ class TopNewsFragment : BaseFragment<TopNewsViewModel, TopNewsFragmentBinding>()
 
     }
 
-    private fun stopRefreshing() {
+    override fun stopRefreshing() {
         with(binding.swipeRefreshLayout) {
             if (isRefreshing) {
                 isRefreshing = false
@@ -62,7 +62,7 @@ class TopNewsFragment : BaseFragment<TopNewsViewModel, TopNewsFragmentBinding>()
         }
     }
 
-    private fun startRefreshing() {
+    override fun startRefreshing() {
         with(binding.swipeRefreshLayout) {
             if (!isRefreshing) {
                 isRefreshing = true

@@ -21,6 +21,7 @@ class NewsRepository @Inject constructor(
     private val sharedPreferences: SharedPreferences
 ) {
 
+    //val progress
     val articleLiveData = MutableLiveData<List<ArticleRoom>>()
     val searchLiveData= MutableLiveData<List<ArticleRoom>>()
     private fun isConnected(): Boolean {
