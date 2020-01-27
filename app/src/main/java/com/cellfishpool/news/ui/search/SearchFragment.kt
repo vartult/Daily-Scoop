@@ -1,6 +1,5 @@
 package com.cellfishpool.news.ui.search
 
-import android.app.Application
 import android.content.Context
 import android.os.Bundle
 import android.text.Editable
@@ -16,7 +15,7 @@ import com.cellfishpool.news.databinding.SearchFragmentBinding
 import com.cellfishpool.news.network.model.ArticleRoom
 import com.cellfishpool.news.ui.base.BaseFragment
 import com.cellfishpool.news.ui.news.TopNewsAdapter
-import kotlinx.android.synthetic.main.search_fragment.view.*
+import com.jakewharton.rxbinding2.widget.RxTextView
 
 class SearchFragment : BaseFragment<SearchViewModel, SearchFragmentBinding>() {
     override fun getViewModelClass(): Class<SearchViewModel> = SearchViewModel::class.java
@@ -39,43 +38,52 @@ class SearchFragment : BaseFragment<SearchViewModel, SearchFragmentBinding>() {
         }
     }
 
-//    override fun addListner() {
-//        with(binding.searchView) {
-//
-//            setOnQueryTextListener(this@SearchFragment)
-//            setOnFocusChangeListener { view, hasFocus ->
-//                if (hasFocus) showKeyboard(view)
-//                else dismissKeyboard(view)
-//            }
-//            requestFocus()
-//        }
-//    }
-
     override fun addListner() {
+        binding.swipeRefreshLayout.setOnRefreshListener {
+            stopRefreshing()
+        }
+
         with(binding.searchView) {
+            addTextChangedListener(object : TextWatcher {
+                override fun afterTextChanged(s: Editable?) {
+                    val observableQuery = RxTextView.textChanges(this@with).map { it.toString() }
+                    viewModel.autoResult(observableQuery)
+                    if(s.toString().length>=3)
+                    this@SearchFragment.startRefreshing()
+                }
+
+                override fun beforeTextChanged(
+                    s: CharSequence?,
+                    start: Int,
+                    count: Int,
+                    after: Int
+                ) {
+                }
+
+                override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+                }
+            })
             setOnKeyListener { v, keyCode, event ->
                 if (keyCode == KeyEvent.KEYCODE_ENTER) {
-                    viewModel.getData(searchView.text.toString())
                     dismissKeyboard(activity?.currentFocus!!)
-                    true
                 }
                 false
             }
-            showKeyboard(activity?.currentFocus!!)
 
+            showKeyboard(activity?.currentFocus!!)
         }
     }
 
 
     private fun updateRecyclerViewAdapter(results: List<ArticleRoom>) {
+        stopRefreshing()
         val adapter = binding.searchrecyclerview.adapter
-
         (adapter as? TopNewsAdapter)?.updateDataSet(results)
-
     }
 
     override fun addObservers() {
         viewModel.searchLiveData.observe(viewLifecycleOwner, Observer {
+
             updateRecyclerViewAdapter(it)
         })
     }
@@ -90,5 +98,21 @@ class SearchFragment : BaseFragment<SearchViewModel, SearchFragmentBinding>() {
         val inputMethodManager =
             view.context.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
         inputMethodManager.hideSoftInputFromWindow(view.windowToken, 0)
+    }
+
+    override fun stopRefreshing() {
+        with(binding.swipeRefreshLayout) {
+            if (isRefreshing) {
+                isRefreshing = false
+            }
+        }
+    }
+
+    override fun startRefreshing() {
+        with(binding.swipeRefreshLayout) {
+            if (!isRefreshing) {
+                isRefreshing = true
+            }
+        }
     }
 }
