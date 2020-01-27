@@ -16,7 +16,7 @@ class SearchViewModel @Inject constructor(private val repository: NewsRepository
 
     fun getData(query: String){
         viewModelScope.launch {
-            repository.fetchSearchQueryCoroutine(query)
+            repository.fetchSearchQuery(query)
         }
 
     }
