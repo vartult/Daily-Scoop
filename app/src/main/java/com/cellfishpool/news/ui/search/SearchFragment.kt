@@ -87,7 +87,6 @@ class SearchFragment : BaseFragment<SearchViewModel, SearchFragmentBinding>() {
             updateRecyclerViewAdapter(it)
         })
     }
-
     private fun showKeyboard(view: View) {
         val inputMethodManager =
             view.context.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
