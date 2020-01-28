@@ -1,5 +1,7 @@
 package com.cellfishpool.news.ui.news
 
+import android.graphics.Color
+import android.graphics.drawable.ColorDrawable
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
@@ -40,7 +42,7 @@ class TopNewsAdapter : RecyclerView.Adapter<TopNewsAdapter.MyViewHolder>() {
             with(binding) {
                 title.text = articleRoom.title
                 description.text = articleRoom.description
-                Glide.with(root.context).load(articleRoom.urlToImage).centerCrop().into(image)
+                Glide.with(root.context).load(articleRoom.urlToImage).placeholder(ColorDrawable(Color.BLACK)).centerCrop().into(image)
             }
         }
     }
