@@ -17,7 +17,7 @@ class TopNewsViewModel @Inject constructor(private val newsRepository: NewsRepos
 
     fun getData(){
         viewModelScope.launch {
-            newsRepository.fetchArticleDataCoroutine()
+            newsRepository.fetchArticleDataFromNetworkCoroutine()
         }
     }
 }
