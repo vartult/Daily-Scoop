@@ -14,7 +14,7 @@ import timber.log.Timber
 
 class NewsActivity : BaseActivity<NewsViewModel, ActivityMainBinding>(),
     BottomNavigationView.OnNavigationItemSelectedListener {
-
+    var count=0
 
     override fun onCreate(savedInstanceState: Bundle?) {
         (application as NewsApplication).appComponent.inject(this)
@@ -34,20 +34,30 @@ class NewsActivity : BaseActivity<NewsViewModel, ActivityMainBinding>(),
     override fun getLayoutId(): Int = R.layout.activity_main
     override fun onNavigationItemSelected(p0: MenuItem): Boolean {
 
+
         when (p0.itemId) {
             R.id.action_top -> {
-                Timber.d(p0.toString())
-                supportFragmentManager.beginTransaction().replace(R.id.container, TopNewsFragment())
-                    .commit()
+                if(count!=0){
+                    count = 0
+                    Timber.d(p0.toString())
+                    supportFragmentManager.beginTransaction().replace(R.id.container, TopNewsFragment())
+                        .commit()
+                }
 
             }
             R.id.action_search->{
-                supportFragmentManager.beginTransaction().replace(R.id.container,SearchFragment())
-                    .commit()
+                if(count!=1){
+                    count = 1
+                    supportFragmentManager.beginTransaction().replace(R.id.container,SearchFragment())
+                        .commit()
+                }
             }
             R.id.action_settings->{
-                supportFragmentManager.beginTransaction().replace(R.id.container,SettingsFragment())
-                    .commit()
+                if(count!=2){
+                    count = 2
+                    supportFragmentManager.beginTransaction().replace(R.id.container,SettingsFragment())
+                        .commit()
+                }
             }
         }
         return true
