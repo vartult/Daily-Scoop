@@ -51,10 +51,10 @@ class NewsRepository @Inject constructor(
         return networkUtil.isNetworkAvailable()
     }
 
-    suspend fun fetchArticleDataCoroutine() {
+    suspend fun fetchArticleDataCoroutine(responseNews: ResponseNews) {
         withContext(Dispatchers.IO) {
             if (isConnected()) {
-                val articles = fetchArticleDataFromNetworkCoroutine(sharedPreferences.getString(Constants.COUNTRY_KEY,"in")!!)?.articles?.map {
+                val articles = responseNews.articles.map {
                     it.toRoomResult()
                 }
                 deleteAllStories()
@@ -106,19 +106,18 @@ class NewsRepository @Inject constructor(
         database.getArticlesDao().deleteAllArticles()
     }
 
-    private suspend fun fetchArticleDataFromNetworkCoroutine(country: String): ResponseNews? {
-
+    suspend fun fetchArticleDataFromNetworkCoroutine(){
+        val country=sharedPreferences.getString(Constants.COUNTRY_KEY,"in")!!
         //return apiService.getTopHeadLines("in")
         val response = apiService.getTopHeadLines(country)
-        return if (response.isSuccessful)
+        if (response.isSuccessful)
         {
             Timber.i(response.toString())
-            response.body()
+            fetchArticleDataCoroutine(response.body()!!)
         }
-
         else {
            Timber.i("Error Fetching Data")
-            null
+
         }
 
     }
