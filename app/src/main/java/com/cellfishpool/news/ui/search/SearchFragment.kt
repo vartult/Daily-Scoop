@@ -8,13 +8,13 @@ import android.view.KeyEvent
 import android.view.View
 import android.view.inputmethod.InputMethodManager
 import androidx.lifecycle.Observer
+import androidx.paging.PagedList
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.cellfishpool.news.NewsApplication
 import com.cellfishpool.news.R
 import com.cellfishpool.news.databinding.SearchFragmentBinding
-import com.cellfishpool.news.network.model.ArticleRoom
+import com.cellfishpool.news.network.model.ArticleX
 import com.cellfishpool.news.ui.base.BaseFragment
-import com.cellfishpool.news.ui.news.TopNewsAdapter
 import com.jakewharton.rxbinding2.widget.RxTextView
 
 class SearchFragment : BaseFragment<SearchViewModel, SearchFragmentBinding>() {
@@ -25,6 +25,7 @@ class SearchFragment : BaseFragment<SearchViewModel, SearchFragmentBinding>() {
     override fun onCreate(savedInstanceState: Bundle?) {
         (context?.applicationContext as NewsApplication).appComponent.inject(this)
         super.onCreate(savedInstanceState)
+        retainInstance = true
     }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
@@ -33,7 +34,7 @@ class SearchFragment : BaseFragment<SearchViewModel, SearchFragmentBinding>() {
 
     override fun initRecycler() {
         with(binding.searchrecyclerview) {
-            adapter = TopNewsAdapter()
+            adapter = SearchAdapter()
             layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
         }
     }
@@ -48,8 +49,8 @@ class SearchFragment : BaseFragment<SearchViewModel, SearchFragmentBinding>() {
                 override fun afterTextChanged(s: Editable?) {
                     val observableQuery = RxTextView.textChanges(this@with).map { it.toString() }
                     viewModel.autoResult(observableQuery)
-                    if(s.toString().length>=3)
-                    this@SearchFragment.startRefreshing()
+                    if (s.toString().length >= 3)
+                        this@SearchFragment.startRefreshing()
                 }
 
                 override fun beforeTextChanged(
@@ -75,15 +76,14 @@ class SearchFragment : BaseFragment<SearchViewModel, SearchFragmentBinding>() {
     }
 
 
-    private fun updateRecyclerViewAdapter(results: List<ArticleRoom>) {
+    private fun updateRecyclerViewAdapter(results: PagedList<ArticleX>) {
         stopRefreshing()
         val adapter = binding.searchrecyclerview.adapter
-        (adapter as? TopNewsAdapter)?.updateDataSet(results)
+        (adapter as? SearchAdapter)?.submitList(results)
     }
 
     override fun addObservers() {
         viewModel.searchLiveData.observe(viewLifecycleOwner, Observer {
-
             updateRecyclerViewAdapter(it)
         })
     }

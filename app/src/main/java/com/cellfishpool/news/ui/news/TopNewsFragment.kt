@@ -24,6 +24,7 @@ class TopNewsFragment : BaseFragment<TopNewsViewModel, TopNewsFragmentBinding>()
         super.onActivityCreated(savedInstanceState)
         startRefreshing()
         viewModel.getData()
+        retainInstance = true
     }
 
     override fun initRecycler() {

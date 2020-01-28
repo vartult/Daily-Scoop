@@ -18,12 +18,14 @@ class NewsActivity : BaseActivity<NewsViewModel, ActivityMainBinding>(),
 
     override fun onCreate(savedInstanceState: Bundle?) {
         (application as NewsApplication).appComponent.inject(this)
+
         super.onCreate(savedInstanceState)
         binding.bottomNavigationView.setOnNavigationItemSelectedListener(this)
         if (savedInstanceState == null) {
             supportFragmentManager.beginTransaction().add(R.id.container, TopNewsFragment())
                 .commit()
         }
+
     }
 
 

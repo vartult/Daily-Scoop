@@ -21,6 +21,8 @@ class SettingsFragment : PreferenceFragmentCompat(), Preference.OnPreferenceChan
         bindCountryPreference(findPreference<ListPreference>(Constants.COUNTRY_KEY)!!)
     }
 
+
+
     private fun bindPreference(preference: Preference) {
         preference.onPreferenceChangeListener = this
 
