@@ -6,6 +6,7 @@ import androidx.lifecycle.Transformations
 import androidx.lifecycle.viewModelScope
 import androidx.paging.PagedList
 import com.cellfishpool.news.database.NewsRepository
+import com.cellfishpool.news.network.model.ArticleRoom
 import com.cellfishpool.news.network.model.ArticleX
 import com.cellfishpool.news.ui.base.BaseViewModel
 import io.reactivex.Observable
@@ -31,7 +32,7 @@ class SearchViewModel @Inject constructor(private val repository: NewsRepository
 
     @SuppressLint("CheckResult")
     fun autoResult(observableQuery: Observable<String>) {
-        observableQuery.debounce(1000, TimeUnit.MILLISECONDS)
+        observableQuery.debounce(400, TimeUnit.MILLISECONDS)
             .filter { query ->
                 !query.isEmpty() && query.length >= 3
             }
