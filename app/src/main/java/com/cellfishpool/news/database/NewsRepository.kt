@@ -37,7 +37,7 @@ class NewsRepository @Inject constructor(
         val pageSize=1
         PagedList.Config.Builder()
             .setPageSize(pageSize)
-            .setInitialLoadSizeHint(pageSize)
+            .setInitialLoadSizeHint(pageSize*2)
             .build()
     }
 
