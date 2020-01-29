@@ -6,7 +6,6 @@ import androidx.lifecycle.Transformations
 import androidx.lifecycle.viewModelScope
 import androidx.paging.PagedList
 import com.cellfishpool.news.database.NewsRepository
-import com.cellfishpool.news.network.model.ArticleRoom
 import com.cellfishpool.news.network.model.ArticleX
 import com.cellfishpool.news.ui.base.BaseViewModel
 import io.reactivex.Observable
