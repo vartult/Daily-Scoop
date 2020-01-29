@@ -43,7 +43,6 @@ class SearchFragment : BaseFragment<SearchViewModel, SearchFragmentBinding>() {
         binding.swipeRefreshLayout.setOnRefreshListener {
             stopRefreshing()
         }
-
         with(binding.searchView) {
             addTextChangedListener(object : TextWatcher {
                 override fun afterTextChanged(s: Editable?) {
@@ -51,6 +50,8 @@ class SearchFragment : BaseFragment<SearchViewModel, SearchFragmentBinding>() {
                     viewModel.autoResult(observableQuery)
                     if (s.toString().length >= 3)
                         this@SearchFragment.startRefreshing()
+                    if (s.toString().length < 3)
+                        this@SearchFragment.stopRefreshing()
                 }
 
                 override fun beforeTextChanged(
@@ -75,17 +76,19 @@ class SearchFragment : BaseFragment<SearchViewModel, SearchFragmentBinding>() {
         }
     }
 
-
     private fun updateRecyclerViewAdapter(results: PagedList<ArticleX>) {
-        stopRefreshing()
+
         val adapter = binding.searchrecyclerview.adapter
+        stopRefreshing()
         (adapter as? SearchAdapter)?.submitList(results)
+
     }
 
     override fun addObservers() {
         viewModel.searchLiveData.observe(viewLifecycleOwner, Observer {
             updateRecyclerViewAdapter(it)
         })
+
     }
 
     private fun showKeyboard(view: View) {

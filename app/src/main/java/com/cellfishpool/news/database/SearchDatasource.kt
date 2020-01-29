@@ -31,6 +31,7 @@ class SearchDatasource(
         Timber.i(params.key.toString())
         networkScope.launch {
             val result = apiService.getSearchQuery(searchQuery, Constants.API_KEY, params.key)
+            if(result.body()!=null)
             callback.onResult(result.body()!!.articles, params.key + 1)
         }
 
