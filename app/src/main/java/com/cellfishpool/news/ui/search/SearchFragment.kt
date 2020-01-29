@@ -75,7 +75,6 @@ class SearchFragment : BaseFragment<SearchViewModel, SearchFragmentBinding>() {
         }
     }
 
-
     private fun updateRecyclerViewAdapter(results: PagedList<ArticleX>) {
         stopRefreshing()
         val adapter = binding.searchrecyclerview.adapter
