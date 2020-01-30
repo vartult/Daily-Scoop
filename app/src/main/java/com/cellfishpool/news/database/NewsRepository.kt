@@ -1,13 +1,11 @@
 package com.cellfishpool.news.database
 
 import android.content.SharedPreferences
-import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Transformations
 import androidx.paging.LivePagedListBuilder
 import androidx.paging.PagedList
-import com.cellfishpool.news.R
 import com.cellfishpool.news.network.model.ArticleRoom
 import com.cellfishpool.news.network.model.ArticleX
 import com.cellfishpool.news.network.model.ResponseNews
@@ -20,6 +18,7 @@ import kotlinx.coroutines.withContext
 import timber.log.Timber
 import javax.inject.Inject
 
+
 class NewsRepository @Inject constructor(
     private val apiService: ApiService,
     private val database: ArticleDatabase,
@@ -27,7 +26,9 @@ class NewsRepository @Inject constructor(
     private val sharedPreferences: SharedPreferences
 ) {
 
-    //val progress
+    var networkState = MutableLiveData<String>()
+    var initialLoading = MutableLiveData<String>()
+
     val articleLiveData = MutableLiveData<List<ArticleRoom>>()
     private lateinit var sourceFactory: SearchDatasourceFactory
 
@@ -37,7 +38,8 @@ class NewsRepository @Inject constructor(
         val pageSize=1
         PagedList.Config.Builder()
             .setPageSize(pageSize)
-            .setInitialLoadSizeHint(pageSize*2)
+            .setInitialLoadSizeHint(pageSize)
+            .setEnablePlaceholders(true)
             .build()
     }
 
