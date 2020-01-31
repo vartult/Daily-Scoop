@@ -23,6 +23,7 @@ class SearchDatasource(
         networkScope.launch {
             val result = apiService.getSearchQuery(searchQuery, Constants.API_KEY, key)
             Timber.d(result.toString())
+            if(result.body()!=null)
             callback.onResult(result.body()!!.articles, 0, key + 1)
         }
     }
@@ -30,6 +31,7 @@ class SearchDatasource(
     override fun loadAfter(params: LoadParams<Int>, callback: LoadCallback<Int, ArticleX>) {
         networkScope.launch {
             val result = apiService.getSearchQuery(searchQuery, Constants.API_KEY, params.key)
+            if(result.body()!=null)
             callback.onResult(result.body()!!.articles, params.key + 1)
         }
 

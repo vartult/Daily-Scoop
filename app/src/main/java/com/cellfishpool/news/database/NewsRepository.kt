@@ -32,10 +32,10 @@ class NewsRepository @Inject constructor(
     val articleLiveData = MutableLiveData<List<ArticleRoom>>()
     private lateinit var sourceFactory: SearchDatasourceFactory
 
-    val searchQueryLiveData= MutableLiveData<String>()
+    private val searchQueryLiveData = MutableLiveData<String>()
 
-    private val pageListConfig: PagedList.Config by lazy{
-        val pageSize=1
+    private val pageListConfig: PagedList.Config by lazy {
+        val pageSize = 1
         PagedList.Config.Builder()
             .setPageSize(pageSize)
             .setInitialLoadSizeHint(pageSize)
@@ -43,17 +43,18 @@ class NewsRepository @Inject constructor(
             .build()
     }
 
-    val searchLiveData: LiveData<PagedList<ArticleX>> = Transformations.switchMap(searchQueryLiveData){
-        sourceFactory = SearchDatasourceFactory(it?:"",apiService)
-        LivePagedListBuilder<Int,ArticleX>(sourceFactory,pageListConfig).build()
-    }
+    val searchLiveData: LiveData<PagedList<ArticleX>> =
+        Transformations.switchMap(searchQueryLiveData) {
+            sourceFactory = SearchDatasourceFactory(it ?: "", apiService)
+            LivePagedListBuilder<Int, ArticleX>(sourceFactory, pageListConfig).build()
+        }
 
 
     private fun isConnected(): Boolean {
         return networkUtil.isNetworkAvailable()
     }
 
-    suspend fun fetchArticleDataCoroutine(responseNews: ResponseNews) {
+    private suspend fun fetchArticleDataCoroutine(responseNews: ResponseNews) {
         withContext(Dispatchers.IO) {
             if (isConnected()) {
                 val articles = responseNews.articles.map {
@@ -79,7 +80,7 @@ class NewsRepository @Inject constructor(
 //        }
 //    }
 
-//     suspend fun fetchSearchQuery(query: String){
+    //     suspend fun fetchSearchQuery(query: String){
 //        val response=apiService.getSearchQuery(query,Constants.API_KEY,)
 //         if (response.isSuccessful)
 //        {
@@ -92,9 +93,9 @@ class NewsRepository @Inject constructor(
 //
 //        }
 //    }
-    fun fetchSearchQuery(query: String){
-    searchQueryLiveData.value=query
-}
+    fun fetchSearchQuery(query: String) {
+        searchQueryLiveData.value = query
+    }
 
     private suspend fun fetchArticleDatafromRoom(): List<ArticleRoom>? {
         return database.getArticlesDao().getArticles()
@@ -108,17 +109,15 @@ class NewsRepository @Inject constructor(
         database.getArticlesDao().deleteAllArticles()
     }
 
-    suspend fun fetchArticleDataFromNetworkCoroutine(){
-        val country=sharedPreferences.getString(Constants.COUNTRY_KEY,"in")!!
+    suspend fun fetchArticleDataFromNetworkCoroutine() {
+        val country = sharedPreferences.getString(Constants.COUNTRY_KEY, "in")!!
         //return apiService.getTopHeadLines("in")
         val response = apiService.getTopHeadLines(country)
-        if (response.isSuccessful)
-        {
+        if (response.isSuccessful) {
             Timber.i(response.toString())
             fetchArticleDataCoroutine(response.body()!!)
-        }
-        else {
-           Timber.i("Error Fetching Data")
+        } else {
+            Timber.i("Error Fetching Data")
 
         }
 
