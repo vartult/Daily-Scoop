@@ -4,6 +4,7 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
+import com.cellfishpool.news.R
 import com.cellfishpool.news.databinding.TopNewsItemBinding
 import com.cellfishpool.news.network.model.ArticleRoom
 
@@ -40,7 +41,8 @@ class TopNewsAdapter : RecyclerView.Adapter<TopNewsAdapter.MyViewHolder>() {
             with(binding) {
                 title.text = articleRoom.title
                 description.text = articleRoom.description
-                Glide.with(root.context).load(articleRoom.urlToImage).centerCrop().into(image)
+                Glide.with(root.context).load(articleRoom.urlToImage).thumbnail(Glide.with(root.context).load(
+                    R.drawable.anim)).centerCrop().into(image)
             }
         }
     }

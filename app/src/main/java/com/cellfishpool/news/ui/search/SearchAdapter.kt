@@ -6,6 +6,7 @@ import androidx.paging.PagedListAdapter
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
+import com.cellfishpool.news.R
 import com.cellfishpool.news.databinding.TopNewsItemBinding
 import com.cellfishpool.news.network.model.ArticleX
 
@@ -32,7 +33,7 @@ class SearchAdapter : PagedListAdapter<ArticleX, SearchAdapter.ViewHolder>(Searc
             with(binding) {
                 title.text = doc.title
                 description.text = doc.description
-                Glide.with(root.context).load(doc.urlToImage).centerCrop().into(image)
+                Glide.with(root.context).load(doc.urlToImage).thumbnail(Glide.with(root.context).load(R.drawable.anim)).centerCrop().into(image)
             }
         }
     }
