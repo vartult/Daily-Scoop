@@ -22,7 +22,7 @@ class SearchViewModel @Inject constructor(private val repository: NewsRepository
             it
         }
 
-    fun getData(query: String) {
+    private fun getData(query: String) {
         viewModelScope.launch {
             repository.fetchSearchQuery(query)
         }
@@ -33,7 +33,7 @@ class SearchViewModel @Inject constructor(private val repository: NewsRepository
     fun autoResult(observableQuery: Observable<String>) {
         observableQuery.debounce(400, TimeUnit.MILLISECONDS)
             .filter { query ->
-                !query.isEmpty() && query.length >= 3
+                query.isNotEmpty() && query.length >= 3
             }
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe { query ->
