@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "5799022640",
+    "firebase_url": "https://daily-scoop-4aa29.firebaseio.com",
+    "project_id": "daily-scoop-4aa29",
+    "storage_bucket": "daily-scoop-4aa29.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:5799022640:android:b00e1bce30774b40765df5",
+        "android_client_info": {
+          "package_name": "com.cellfishpool.news"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "5799022640-e1o72u3j22np5oghblkrt38ia2uhpauf.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBDIgthE4Aoqt5vTD7euYVE0kwerDyFttA"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "5799022640-e1o72u3j22np5oghblkrt38ia2uhpauf.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

@@ -12,6 +12,8 @@ plugins {
     kotlin("android")
     kotlin("android.extensions")
     kotlin("kapt")
+    id("com.google.gms.google-services")
+    id("com.google.firebase.crashlytics")
 }
 android {
     compileSdkVersion(29)
@@ -126,5 +128,9 @@ dependencies {
 
     //Pagination
     implementation("androidx.paging:paging-runtime:2.1.1")
+
+    //Firebase SDK
+    implementation ("com.google.firebase:firebase-crashlytics:17.0.0-beta01")
+    implementation ("com.google.firebase:firebase-analytics:17.2.3")
 
 }
