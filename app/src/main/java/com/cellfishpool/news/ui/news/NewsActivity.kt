@@ -55,7 +55,7 @@ class NewsActivity : BaseActivity<NewsViewModel, ActivityMainBinding>(),
             R.id.action_settings->{
                 if(count!=2){
                     count = 2
-                    throw RuntimeException("Test Crash")
+                    //throw RuntimeException("Test Crash")
                     supportFragmentManager.beginTransaction().replace(R.id.container,SettingsFragment())
                         .commit()
                 }
